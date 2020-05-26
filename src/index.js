@@ -49,6 +49,10 @@ bot.on("message", async (message) => {
     const cmd = args.shift().toLowerCase()
 
     switch (cmd) {
+      case "current": require("./commands/current").run(message, spotifyUsers); break
+      case "help": require("./commands/help").run(message); break
+      case "pause": require("./commands/pause").run(message, spotifyUsers); break
+      case "play": require("./commands/play").run(message, spotifyUsers); break
       case "playlists": require("./commands/playlists").run(message, spotifyUsers); break
       case "profile": require("./commands/profile").run(message, user); break
       case "spotify": require("./commands/spotify").run(message, spotifyUsers); break

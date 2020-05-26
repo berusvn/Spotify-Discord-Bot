@@ -17,6 +17,7 @@
     "express-handlebars": "^4.0.4",
     "mongodb": "^3.5.7",
     "node-fetch": "^2.6.0",
+    "pretty-ms": "^7.0.0",
     "querystring": "^0.2.0"
   },
   "devDependencies": {

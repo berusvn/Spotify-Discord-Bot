@@ -83,6 +83,92 @@ class Spotify {
     return userPlaylists
   }
 
+  /**
+   * Gets the users current Spotify playing track
+   * @returns {Object} Player API (Get the User's Currently Playing Track)
+   */
+  getUserCurrentlyPlayingTrack = async () => {
+    let userCurrentTrack = await fetch(`https://api.spotify.com/v1/me/player/currently-playing?market=us`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.spotifyObj.access_token}`
+      }
+    })
+    if (userCurrentTrack.status === 401) await this._getNewAccessToken()
+
+    // No Content
+    if (userCurrentTrack.status === 204) {
+      return {error: 204}
+    }
+
+    // OK
+    if (userCurrentTrack.status === 200) {
+      return userCurrentTrack.json()
+    }
+
+  }
+
+  // -~-~-~-~-~-~-~-~-~-~-~-~-~-~ Little Functions -~-~-~-~-~-~-~-~-~-~-~-~-~-~
+
+  /**
+   * Get the Spotify Picture of a Track
+   * @param {String} id The ID of the track
+   * @returns {Url} Tracks API (Get a Track)
+   */
+  getTrackImage = async (id) => {
+    let track = await fetch(`https://api.spotify.com/v1/tracks/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.spotifyObj.access_token}`
+      }
+    }).then(res => res.json())
+
+    return track.album.images[0].url
+  }
+
+  /**
+   * Get the Spotify Profile Picture of a Artist
+   * @param {String} id 
+   * @returns {Url} Artists API (Get an Artist)
+   */
+  getArtistsImage = async (id) => {
+    let artist = await fetch(`https://api.spotify.com/v1/artists/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.spotifyObj.access_token}`
+      }
+    }).then(res => res.json())
+
+    return artist.images[0].url
+  }
+
+  playTrack = async () => {
+    let play = await fetch(`https://api.spotify.com/v1/me/player/play`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${this.spotifyObj.access_token}`
+      }
+    })
+
+    return play.status === 204 ? {succuss: 204} : play.status === 403 ? {premium: 403} : {error: 404}
+  }
+
+  pauseTrack = async () => {
+    let pause = await fetch(`https://api.spotify.com/v1/me/player/pause`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${this.spotifyObj.access_token}`
+      }
+    })
+
+    return pause.status === 204 ? {succuss: 204} : pause.status === 403 ? {premium: 403} : {error: 404}
+  }
+
 }
 
 module.exports = {

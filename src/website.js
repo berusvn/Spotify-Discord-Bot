@@ -54,7 +54,7 @@ app.get("/spotifyLogin", async (req, res) => {
   let userid = req.query.userid || null
   if (userid) {
     userIDS.push(userid)
-    const scopes = "playlist-read-private user-top-read playlist-read-collaborative"
+    const scopes = "playlist-read-private user-top-read playlist-read-collaborative user-read-playback-state user-read-currently-playing user-modify-playback-state"
     res.redirect(`https://accounts.spotify.com/authorize?response_type=code&client_id=${SPOTIFY_CLIENT_ID}&scope=${encodeURIComponent(scopes)}&redirect_uri=${spotifyRedirect}`)
   } else {
     res.status(401).redirect("/profile")
