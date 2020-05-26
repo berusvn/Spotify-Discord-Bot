@@ -1,0 +1,35 @@
+<div>
+    <p id="discord">Logged in with Discord?</p>
+    <a id="discordLink" href="/discordLogin">Login with Discord</a>
+    <br>
+    <p id="spotify">Logged in with Spotify?</p>
+    <a id="spotifyLink" href="">Login with Spotify</a>
+    <button onclick="clearCookies()">Clear Cache</button>
+</div>
+
+<script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function clearCookies() {
+        document.cookie = "discordLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+        document.cookie = "spotifyLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    }
+
+    if (getCookie("discordLogin")) {
+        document.getElementById("discord").innerHTML += " ✅"
+        document.getElementById("discordLink").style.display = "none"
+
+        document.getElementById("spotifyLink").href = `/spotifyLogin?userid=${getCookie("discordLogin")}`
+
+    } else { document.getElementById("discord").innerHTML += " ❎" }
+
+    if (getCookie("spotifyLogin")) {
+        document.getElementById("spotify").innerHTML += " ✅"
+        document.getElementById("spotifyLink").style.display = "none"
+    } else { document.getElementById("spotify").innerHTML += " ❎" }
+    
+</script>
